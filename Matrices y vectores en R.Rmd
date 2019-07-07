@@ -1,0 +1,253 @@
+---
+title: "Matrices y Vectores en R"
+author: "Carlos Prado"
+date: "6/7/2019"
+output: html_document
+---
+Documento: De operaciones básicas con matrices y vectores para el análisis estadístico.   
+Licencia: CC https://creativecommons.org/licenses/by/2.5/ar/   
+GitHub: https://github.com/Azhura/R
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Multiplicación de una matriz por otra matriz
+ 
+Dadas dos matrices $A \ y \ B$, tales que el número de columnas de la matriz $A$ es igual al número de filas de la matriz $B$ es decir: 
+
+$A:= (a_{ij})_{m_{x}n} \ y \ B:= (b_{ij})_{n_{x}p}$ la multiplicación de $A \ por \ B$, que se denota $A\cdot B,A \times B, A\circ B$  o simplemente $AB$ 
+
+El resultado del producto es una nueva matriz $C = AB$   
+
+$$A\cdot B =
+\left(
+\begin{array}{lcr}
+1\cdot4 + 2\cdot0 + 3\cdot1 + 4\cdot0 & 1\cdot3 + 2\cdot3 + 3\cdot2 + 4\cdot1 & 1\cdot2 + 2\cdot0 + 3\cdot3 + 4\cdot0 & 1\cdot1 + 2\cdot4 + 3\cdot4 + 4\cdot2\\
+4\cdot4 + 3\cdot0 + 2\cdot1 + 1\cdot0 & 4\cdot3 + 3\cdot3 + 2\cdot2 + 1\cdot1 & 4\cdot2 + 3\cdot0 + 2\cdot3 + 1\cdot0 & 4\cdot1 + 3\cdot4 + 2\cdot4 + 1\cdot2\\
+0\cdot4 + 1\cdot0 + 0\cdot1 + 2\cdot0 & 0\cdot3 + 1\cdot3 + 0\cdot2 + 2\cdot1 & 0\cdot2 + 1\cdot0 + 0\cdot3 + 2\cdot0 & 0\cdot1 + 1\cdot4 + 0\cdot4 + 2\cdot2\\
+3\cdot4 + 0\cdot0 + 4\cdot1 + 0\cdot0 & 3\cdot3 + 0\cdot3 + 4\cdot2 + 0\cdot1 & 3\cdot2 + 0\cdot0 + 4\cdot3 + 0\cdot0 & 3\cdot1 + 0\cdot4 + 4\cdot4 + 0\cdot2\\
+\end{array}
+\right)$$
+
+$$C \ = AB\left(
+\begin{array}{lcr}
+7 & 19 & 11 & 29 \\
+18 & 26 & 14 & 26 \\
+0 & 5 & 0 & 8 \\
+16 & 17 & 18 & 19 \\
+\end{array}
+\right)$$
+
+$$C=AB:=(c_{ij})_{m_xp} \ \ donde \ cada \ elemento \ c_{ij} \ está \ definido \ por: \ c_{ij}= \sum_{r=1}^{n}a_{ir}b_{rj}$$
+
+```{r}
+A=matrix(nrow=4,ncol=4, c(1,2,3,4,4,3,2,1,0,1,0,2,3,0,4,0),byrow=TRUE)#Matriz A
+B=matrix(nrow=4,ncol=4, c(4,3,2,1,0,3,0,4,1,2,3,4,0,1,0,2),byrow=TRUE)#Matriz B
+A%*%B#(AxB)
+```
+### Conmutativa en B x A
+
+* El producto de dos matrices no es conmutativo: 
+
+$$B\cdot A =
+\left(
+\begin{array}{lcr}
+{4\cdot1 + 3\cdot4 + 2\cdot0 + 1\cdot3} & {4\cdot2 + 3\cdot3 + 2\cdot1 + 1\cdot0} & {4\cdot3 + 3\cdot2 + 2\cdot0 + 1\cdot4} & {4\cdot4 + 3\cdot1 + 2\cdot2 + 1\cdot0}\\
+{0\cdot1 + 3\cdot4 + 0\cdot0 + 4\cdot3} & {0\cdot2 + 3\cdot3 + 0\cdot1 + 4\cdot0} & {0\cdot3 + 3\cdot2 + 0\cdot0 + 4\cdot4} & {0\cdot4 + 3\cdot1 + 0\cdot2 + 4\cdot0}\\
+{1\cdot1 + 2\cdot4 + 3\cdot0 + 4\cdot3} & {1\cdot2 + 2\cdot3 + 3\cdot1 + 4\cdot0} & {1\cdot3 + 2\cdot2 + 3\cdot0 + 4\cdot4} & {1\cdot4 + 2\cdot1 + 3\cdot2 + 4\cdot0}\\
+{0\cdot1 + 1\cdot4 + 0\cdot0 + 2\cdot3} & {0\cdot2 + 1\cdot3 + 0\cdot1 + 2\cdot0} & {0\cdot3 + 1\cdot2 + 0\cdot0 + 2\cdot4} & {0\cdot4 + 1\cdot1 + 0\cdot2 + 2\cdot0}\\
+\end{array}
+\right)$$   
+
+$$\left(
+\begin{array}{lcr}
+7 & 19 & 11 & 29 \\
+18 & 26 & 14 & 26 \\
+0 & 5 & 0 & 8 \\
+16 & 17 & 18 & 19 \\
+\end{array}
+\right)= AB ≠ BA =\left(
+\begin{array}{lcr}
+19 &  19 & 22 & 23 \\
+24 &  9 & 22 & 3 \\
+21 &  11 & 23 & 12 \\
+10 &  3 & 10 & 1 \\
+\end{array}
+\right)$$
+
+$$Es \ decir, \ AB \ es \ distinto \ de \ BA$$
+
+```{r}
+A=matrix(nrow=4,ncol=4, c(1,2,3,4,4,3,2,1,0,1,0,2,3,0,4,0),byrow=TRUE)#Matriz A
+B=matrix(nrow=4,ncol=4, c(4,3,2,1,0,3,0,4,1,2,3,4,0,1,0,2),byrow=TRUE)#Matriz B
+B%*%A#(BxA)
+```
+### Traspuesta de (A x B)
+
+Sea A una matriz con m filas y n columnas. La matriz traspuesta, denotada con $(A\cdot B)^{t}$ 
+
+Está dada por : $(A_{ij}\cdot B_{ij})^{t}= AB_{ji}, 1\leq i \leq n, 1 \leq j \leq m$
+
+$$AB =
+\left(
+\begin{array}{lcr}
+7 & 19 & 11 & 29 \\
+18 & 26 & 14 & 26 \\
+0 & 5 & 0 & 8 \\
+16 & 17 & 18 & 19 \\
+\end{array}
+\right) (A\cdot B)^{t} =\left(
+\begin{array}{lcr}
+7  & 18 & 0 & 16 \\
+19 & 26 & 5 & 17 \\
+11 & 14 & 0 & 18 \\
+29 & 26 & 8 & 19 \\
+\end{array}
+\right)$$
+
+El elemento $ab_{ji}$ de la matriz original $AB$ se convertirá en el elemento $ab_{ij}$ de la matriz traspuesta $(AB)^{t}.$
+```{r}
+A=matrix(nrow=4,ncol=4, c(1,2,3,4,4,3,2,1,0,1,0,2,3,0,4,0),byrow=TRUE)#Matriz A
+B=matrix(nrow=4,ncol=4, c(4,3,2,1,0,3,0,4,1,2,3,4,0,1,0,2),byrow=TRUE)#Matriz B
+t(A%*%B)#Traspuesta de (AxB)
+```
+### Traspuesta de (B) x  A
+Sea A una matriz con m filas y n columnas. La matriz traspuesta, denotada con $(B)^{t}$ 
+
+Está dada por : $(B_{ij})^{t}= B_{ji}, 1\leq i \leq n, 1 \leq j \leq m$
+
+$$B = \left(
+\begin{array}{lcr}
+4 & 3 & 2 & 1 \\
+0 & 3 & 0 & 4 \\
+1 & 2 & 3 & 4 \\
+0 & 1 & 0 & 2 \\
+\end{array}
+\right) (B)^{t} =\left(
+\begin{array}{lcr}
+4 & 0 & 1 & 0\\
+3 & 3 & 2 & 1\\
+2 & 0 & 3 & 0\\
+1 & 4 & 4 & 2\\
+\end{array}
+\right) (B)^{t}\cdot A =\left(
+\begin{array}{lcr}
+  4 & 0 &  3 & 0\\
+ 12 & 9 &  4 & 1\\
+  0 & 0 &  0 & 0\\
+  3 & 0 & 16 & 0\\
+\end{array} 
+\right)$$      
+
+El elemento $b_{ji}$ de la matriz original $B$ se convertirá en el elemento $b_{ij}$ de la matriz traspuesta $(B)^{t}\cdot A$
+```{r}
+A=matrix(nrow=4,ncol=4, c(1,2,3,4,4,3,2,1,0,1,0,2,3,0,4,0),byrow=TRUE)#Matriz A
+B=matrix(nrow=4,ncol=4, c(4,3,2,1,0,3,0,4,1,2,3,4,0,1,0,2),byrow=TRUE)#Matriz B
+t(B)*A#Transpuesta de (B) * A
+```
+### Inversa de (AB)
+
+Si $AB$ es una matriz cuadrada de dimensión $n_{x}n$ y es regular $(determinante\not=0)$,entonces existe una matriz llamada inversa $AB^{-1}$.
+
+Tal que $AB^{−1}$ es de dimensión $n_{x}n$ y $AB^{−1}$ es el inverso multiplicativo de $AB$ por ambos lados es decir: $AB \cdot AB^{-1}=I_{n}$ , 
+
+$AB^{-1}\cdot AB=I_{n}$, siendo $I_{n}$la matriz identidad de dimensión $n_{x}n$
+
+
+$$AB =\left(
+\begin{array}{lcr}
+7 & 19 & 11 & 29 \\
+18 & 26 & 14 & 26 \\
+0 & 5 & 0 & 8 \\
+16 & 17 & 18 & 19 \\
+\end{array}
+\right) (AB)^{-1} =\left(
+\begin{array}{lcr}
+-1.66 & -0.65 & +4.52 & +1.52\\
++1.60 & +0.80 & -4.60 & -1.60\\
++1.02 & +0.35 & -2.84 & -0.84\\
+-1.00 & -0.50 & +3.00 & +1.00\\
+\end{array}
+\right)$$
+
+```{r}
+A=matrix(nrow=4,ncol=4, c(1,2,3,4,4,3,2,1,0,1,0,2,3,0,4,0),byrow=TRUE)#Matriz A
+B=matrix(nrow=4,ncol=4, c(4,3,2,1,0,3,0,4,1,2,3,4,0,1,0,2),byrow=TRUE)#Matriz B
+solve(A%*%B)#Inversa de (A*B)
+```
+### Inversa de A x traspuesta de B
+
+$$A^{-1} = \left(
+\begin{array}{lcr}
+-0.8 & +1.665335e-16 & +1.6 & +0.6\\
++0.8 & +4.000000e-01 & -1.8 & -0.8\\
++0.6 & -8.564578e-17 & -1.2 & -0.2\\
+-0.4 & -2.000000e-01 & +1.4 & +0.4\\
+\end{array}
+\right) (B)^{t} =\left(
+\begin{array}{lcr}
+4 & 0 & 1 & 0\\
+3 & 3 & 2 & 1\\
+2 & 0 & 3 & 0\\
+1 & 4 & 4 & 2\\
+\end{array}
+\right)$$ 
+$$A^{-1}\cdot B^{t}=\left(
+\begin{array}{lcr}
++6.000000e-01 & +2.4 & +6.4 & +1.2\\
+-3.330669e-16 & -2.0 & -7.0 & -1.2\\
+-2.000000e-01 & -0.8 & -3.8 & -0.4\\
++1.000000e+00 & +1.0 & +5.0 & +0.6\\
+\end{array} 
+\right)$$      
+
+```{r}
+A=matrix(nrow=4,ncol=4, c(1,2,3,4,4,3,2,1,0,1,0,2,3,0,4,0),byrow=TRUE)#Matriz A
+B=matrix(nrow=4,ncol=4, c(4,3,2,1,0,3,0,4,1,2,3,4,0,1,0,2),byrow=TRUE)#Matriz B
+solve(A)%*%t(B)#Inversa de (A) x traspuesta de (B)
+```
+
+### Operaciones con Vector numérico
+En matemáticas se llama vector de dimensión $n$ a una tupla de $n$ números reales(Componentes del vector).    
+El conjunto de todos los vectores de dimensión $n$ se representa como $\mathbb{R}^n$ (formado por el producto cartesiano), así un vector perteneciente al espacio $\mathbb{R}^n$se representa como: $v=(a_{1},a_{2},a_{3}...a_{n}), \ donde\ v \in \mathbb{R}^n$      
+
+```{r}
+v = c(3,1,1,7,4,3,7,1)#Vector 
+```
+$Cuadrado\ v=((x_1)^2, (x_2)^2 ...(x_8)^2)$
+```{r}
+v^2 # El cuadrado del vector 
+```
+$Raíz\ v=(\sqrt(x_1), \sqrt(x_2) ...\sqrt(x_8))$
+```{r}
+sqrt(v) # Raiz cuadrada del vector 
+```
+$Sumatoria\ \sum_{i=1}^{8}x_i=x_1+x_2...x_8$
+```{r}
+sum(v) # Suma de los elementos del vector v
+```
+### Operaciones con vector de cadenas
+   
+* Definimos un vector $v = nombre\ (a_1,b_2,c_3..zn)$
+
+```{r}
+nombre = c("C","A","R","L","O","S","P","R","A","D","O")#Vector nombre Completo.
+```
+* Filtramos\ [inicio=0 : hasta=6] del índice para quedarnos con el nombre.
+```{r}
+nombre[0:6]#Vector filtrado por nombre.
+```
+* Filtramos\ [inicio=7 : hasta=11] del índice para quedarnos con el apellido.
+```{r}
+nombre[7:11]#Vector filtrado por apellido.
+```
+* La función sort() ordena de A-Z.
+```{r}
+sort(nombre)#Vector ordenado alfabeticamente A-Z
+```
+
+* Al faltarnos un elemento en la matriz R completa repitiendo la lista.
+
+```{r}
+n_matriz=matrix(nrow=3,ncol=4,nombre)#
+n_matriz
+```
